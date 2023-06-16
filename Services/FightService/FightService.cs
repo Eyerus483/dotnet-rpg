@@ -3,8 +3,8 @@ namespace dotnet_rpg.Services.FightService
     public class FightService : IFightService
     {
         private readonly DataContext _context;
-        private readonly Mapper _mapper;
-        public FightService(DataContext context, Mapper mapper)
+        private readonly IMapper _mapper;
+        public FightService(DataContext context, IMapper mapper)
         {
             _mapper = mapper;
             _context = context;
@@ -19,7 +19,7 @@ namespace dotnet_rpg.Services.FightService
             try
             {
                 var characters = await _context.Characters
-                .Include(c => c.Wepone)
+                .Include(c => c.Weapon)
                 .Include(c => c.Skills)
                 .Where(c => request.CharacterId.Contains(c.Id))
                 .ToListAsync();
@@ -34,9 +34,9 @@ namespace dotnet_rpg.Services.FightService
                         int damage = 0;
                         string attackUsed = string.Empty;
                         bool useweapon = new Random().Next(2) == 0;
-                        if (useweapon && attacker.Wepone is not null)
+                        if (useweapon && attacker.Weapon is not null)
                         {
-                            attackUsed = attacker.Wepone.Name;
+                            attackUsed = attacker.Weapon.Name;
                             damage = DoWeaponeAttack(attacker, opponent);
                         }
                         else if (!useweapon && attacker.Skills is not null)
@@ -71,6 +71,7 @@ namespace dotnet_rpg.Services.FightService
                         c.HitPoints = 100;
                     }
                 );
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -143,11 +144,11 @@ namespace dotnet_rpg.Services.FightService
             try
             {
                 var attacher = await _context.Characters
-                .Include(c => c.Wepone)
+                .Include(c => c.Weapon)
                 .FirstOrDefaultAsync(c => c.Id == request.AttackerId);
                 var opponent = await _context.Characters
                 .FirstOrDefaultAsync(c => c.Id == request.OpponentId);
-                if (attacher is null || opponent is null || attacher.Wepone is null)
+                if (attacher is null || opponent is null || attacher.Weapon is null)
                 {
                     throw new Exception("Something fishy is going here...");
                 }
@@ -176,11 +177,11 @@ namespace dotnet_rpg.Services.FightService
 
         private static int DoWeaponeAttack(Character attacher, Character opponent)
         {
-            if (attacher.Wepone is null)
+            if (attacher.Weapon is null)
             {
                 throw new Exception("attacker has no weapon");
             }
-            int damage = attacher.Wepone.Damage + (new Random().Next(attacher.Strenght));
+            int damage = attacher.Weapon.Damage + (new Random().Next(attacher.Strenght));
             damage -= new Random().Next(opponent.Defeats);
             if (damage > 0)
             {

@@ -70,7 +70,7 @@ namespace dotnet_rpg.Services.CharacterService
         {
             var serviceRespone = new ServiceRespone<List<GetCharaterDto>>();
             var dbCharacter = await _context.Characters
-            .Include(c=>c.Wepone)
+            .Include(c=>c.Weapon)
             .Include(c=> c.Skills)
             .Where(c => c.User!.Id == GetUserId()).ToListAsync();
             serviceRespone.Data = dbCharacter.Select(c => _mapper.Map<GetCharaterDto>(c)).ToList();
@@ -81,7 +81,7 @@ namespace dotnet_rpg.Services.CharacterService
         {
             var serviceRespone = new ServiceRespone<GetCharaterDto>();
             var dbcharacter = await _context.Characters
-            .Include(c=>c.Wepone)
+            .Include(c=>c.Weapon)
             .Include(c=> c.Skills)
             .FirstOrDefaultAsync(c => c.Id == id && c.User!.Id == GetUserId());
             if (dbcharacter == null)
@@ -136,7 +136,7 @@ namespace dotnet_rpg.Services.CharacterService
             try
             {
                 var character = await _context.Characters
-                .Include(c=>c.Wepone)
+                .Include(c=>c.Weapon)
                 .Include(c=> c.Skills)
                 .FirstOrDefaultAsync(c => c.Id == newcharacterskill.CharacterId && c.User!.Id == GetUserId());
                 if(character is null)

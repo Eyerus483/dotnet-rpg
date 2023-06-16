@@ -12,7 +12,7 @@ namespace dotnet_rpg.Model
     public int Intelligence { get; set; }
     public RpgClass Class { get; set; } = RpgClass.Cleric;
     public User? User { get; set; }
-    public Weapon? Wepone { get; set; }
+    public Weapon? Weapon { get; set; }
     public List<Skill>? Skills { get; set; }
     public int Fight { get; set; }
     public int Victories { get; set; }

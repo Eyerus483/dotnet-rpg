@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dotnet_rpg.Data;
 
@@ -11,9 +12,11 @@ using dotnet_rpg.Data;
 namespace dotnet_rpg.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230616152638_victories")]
+    partial class victories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,7 +204,7 @@ namespace dotnet_rpg.Migrations
             modelBuilder.Entity("dotnet_rpg.Model.Weapon", b =>
                 {
                     b.HasOne("dotnet_rpg.Model.Character", "Character")
-                        .WithOne("Weapon")
+                        .WithOne("Wepone")
                         .HasForeignKey("dotnet_rpg.Model.Weapon", "CharacterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -211,7 +214,7 @@ namespace dotnet_rpg.Migrations
 
             modelBuilder.Entity("dotnet_rpg.Model.Character", b =>
                 {
-                    b.Navigation("Weapon");
+                    b.Navigation("Wepone");
                 });
 
             modelBuilder.Entity("dotnet_rpg.Model.User", b =>
