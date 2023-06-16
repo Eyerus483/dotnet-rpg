@@ -59,7 +59,7 @@ namespace dotnet_rpg.Services.FightService
                             attacker.Victories++;
                             opponent.Defeats++;
                             respone.Data.Log.Add($"{opponent.Name} has been defeated");
-                            respone.Data.Log.Add($"{attacker.Name} wins with {attacker.HitPoints} HP lest");
+                            respone.Data.Log.Add($"{attacker.Name} wins with {attacker.HitPoints} HP left");
                             break;
                         }
                     }
